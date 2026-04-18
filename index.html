@@ -445,6 +445,10 @@
     </div>
     <input type="file" id="import-file" accept=".json" style="display:none" onchange="importData(event)">
     <div id="import-status" style="font-size:0.76rem;color:var(--text-dim);margin-top:10px;"></div>
+    <div style="margin-top:16px;padding-top:16px;border-top:1px solid var(--border);">
+      <div style="font-size:0.78rem;color:var(--text-dim);margin-bottom:10px;">&#9888; Danger zone — this cannot be undone. Export a backup first if you want to keep your data.</div>
+      <button onclick="clearAllData()" style="background:rgba(194,57,95,0.15);border:1px solid rgba(194,57,95,0.4);color:#e07090;border-radius:10px;padding:10px 20px;font-family:'DM Sans',sans-serif;font-size:0.82rem;cursor:pointer;width:100%;">&#128465; Clear All Data</button>
+    </div>
   </div>
 
 </div>

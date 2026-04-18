@@ -4,7 +4,7 @@
 var SYMPTOMS = ['Hot flashes','Night sweats','Brain fog','Insomnia','Joint pain','Headache','Bloating','Breast tenderness','Cramps','Back pain','Vaginal dryness','Low libido','Heart palpitations','Dizziness','Fatigue','Chills','Nausea','Skin changes','Hair thinning','Weight changes'];
 var TRIGGERS = ['Stress','Alcohol','Caffeine','Poor sleep','Spicy food','Hot drinks','Exercise','Dehydration','Refined sugar','Late night','THC / Cannabis','CBD'];
 var FLOW_COLORS = {none:'var(--accent3)',spot:'#f5dde2',light:'var(--flow-light)',medium:'var(--flow-medium)',heavy:'var(--flow-heavy)'};
-var HISTORICAL = [['2026-02-06','2026-02-10'],['2026-01-24','2026-01-26'],['2026-01-11','2026-01-15'],['2025-12-20','2025-12-24'],['2025-11-27','2025-12-04'],['2025-11-03','2025-11-08'],['2025-10-10','2025-10-14'],['2025-09-17','2025-09-21'],['2025-08-27','2025-09-01'],['2025-08-06','2025-08-09'],['2025-07-13','2025-07-19'],['2025-05-09','2025-05-13'],['2025-04-12','2025-04-16'],['2025-03-22','2025-03-26'],['2025-03-06','2025-03-09'],['2025-02-08','2025-02-11'],['2025-01-18','2025-01-22'],['2024-12-26','2024-12-28']];
+var HISTORICAL = []; // seed data removed for public release
 // Dynamic prediction: calculates next period starts from last cycle start + avg cycle length
 function calcPredStarts() {
   var s=getSettings();
@@ -1459,11 +1459,20 @@ function importData(event) {
   event.target.value='';
 }
 
+function clearAllData() {
+  if(!confirm('This will permanently delete all your Luna data — logs, settings, and custom tags. This cannot be undone.\n\nAre you sure?')) return;
+  localStorage.removeItem('luna-logs');
+  localStorage.removeItem('luna-settings');
+  logs={};
+  toast('All data cleared');
+  // Reload the page for a completely fresh start
+  setTimeout(function(){window.location.reload();},1000);
+}
+
 // ═══════════════════════════════════════════════════════════════
 // INIT
 // ═══════════════════════════════════════════════════════════════
 window.onload = function() {
-  seed();
   var now=new Date();
   document.getElementById('log-date').value=tod();
   calYear=now.getFullYear();calMonth=now.getMonth();
