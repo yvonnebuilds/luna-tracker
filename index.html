@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Luna — Perimenopause Tracker</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="luna.css">
+</head>
+<body>
+<div class="app">
+
+<header>
+  <div class="logo"><span class="logo-moon">☽</span>LUNA</div>
+  <div class="tagline">Perimenopause Tracker</div>
+</header>
+
+<div class="tabs">
+  <button class="tab active" onclick="showTab('log')">Log Day</button>
+  <button class="tab" onclick="showTab('calendar')">Calendar</button>
+  <button class="tab" onclick="showTab('history')">History</button>
+  <button class="tab" onclick="showTab('trends')">Trends</button>
+  <button class="tab" onclick="showTab('settings')">Settings</button>
+</div>
+
+<!-- ══ LOG ══════════════════════════════════════════════════════ -->
+<div class="panel active" id="panel-log">
+  <div class="card">
+    <div class="card-title">&#127800; Log Today</div>
+
+    <div class="form-row">
+      <div><label>Date</label><input type="date" id="log-date"></div>
+      <div>
+        <label>Flow <span class="info" onclick="toggleTip('tip-flow')">&#9432;</span></label>
+        <div class="flow-options">
+          <button class="flow-btn" data-flow="none"   onclick="selectFlow(this)">None</button>
+          <button class="flow-btn" data-flow="spot"   onclick="selectFlow(this)">Spotting</button>
+          <button class="flow-btn" data-flow="light"  onclick="selectFlow(this)">Light</button>
+          <button class="flow-btn" data-flow="medium" onclick="selectFlow(this)">Medium</button>
+          <button class="flow-btn" data-flow="heavy"  onclick="selectFlow(this)">Heavy</button>
+        </div>
+      </div>
+    </div>
+    <div class="tooltip-box" id="tip-flow"><strong>About spotting in perimenopause:</strong> Spotting between periods is very common as oestrogen levels fluctuate. It's usually harmless but always worth mentioning to your GP if it happens frequently or after sex.</div>
+
+    <div class="form-row full">
+      <label>Symptoms <span class="info" onclick="toggleTip('tip-sx')">&#9432;</span></label>
+      <div class="tooltip-box" id="tip-sx"><strong>Why do symptoms cluster?</strong> Fluctuating oestrogen affects the brain, bones, skin and more — which is why perimenopause can feel like so many different things at once. Tracking them helps identify your personal patterns.</div>
+      <div class="chip-grid" id="symptom-grid"></div>
+    </div>
+
+    <div class="form-row full">
+      <label>Triggers <span class="info" onclick="toggleTip('tip-trig')">&#9432;</span></label>
+      <div class="tooltip-box" id="tip-trig"><strong>What are triggers?</strong> Certain lifestyle factors can worsen hot flashes, sleep and mood. Logging them alongside symptoms helps reveal personal patterns — e.g. alcohol and hot flash frequency.</div>
+      <div class="chip-grid" id="trigger-grid"></div>
+    </div>
+
+    <div class="form-row full">
+      <label>Custom Tags <span class="info" onclick="toggleTip('tip-tags')">&#9432;</span></label>
+      <div class="tooltip-box" id="tip-tags"><strong>Your personal tags:</strong> Add anything that matters to your health picture but isn't in the standard lists — e.g. "migraine", "gym", "work stress", "therapy". Manage your tag library in Settings.</div>
+      <div class="chip-grid" id="custom-tag-grid"></div>
+      <div style="margin-top:8px;display:flex;gap:8px;">
+        <input type="text" id="new-tag-input" placeholder="Add a tag for today..." style="flex:1;background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:8px 12px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:0.82rem;">
+        <button onclick="addQuickTag()" style="background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:8px 14px;color:var(--accent1);font-size:0.82rem;cursor:pointer;">+ Add</button>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div>
+        <label>Mood <span class="info" onclick="toggleTip('tip-mood')">&#9432;</span></label>
+        <div class="tooltip-box" id="tip-mood"><strong>Mood &amp; perimenopause:</strong> Low oestrogen directly affects serotonin, which regulates mood. Anxiety, irritability and tearfulness are neurological symptoms — not a sign of weakness. You can select multiple moods.</div>
+        <div class="mood-row" id="mood-row">
+          <button class="mood-btn" data-mood="Happy"     onclick="toggleMood(this)" title="Happy">&#128522;</button>
+          <button class="mood-btn" data-mood="Low"       onclick="toggleMood(this)" title="Low">&#128532;</button>
+          <button class="mood-btn" data-mood="Irritable" onclick="toggleMood(this)" title="Irritable">&#128548;</button>
+          <button class="mood-btn" data-mood="Anxious"   onclick="toggleMood(this)" title="Anxious">&#128544;</button>
+          <button class="mood-btn" data-mood="Neutral"   onclick="toggleMood(this)" title="Neutral">&#128528;</button>
+          <button class="mood-btn" data-mood="Exhausted" onclick="toggleMood(this)" title="Exhausted">&#128564;</button>
+          <button class="mood-btn" data-mood="Calm"      onclick="toggleMood(this)" title="Calm">&#129496;</button>
+          <button class="mood-btn" data-mood="Tearful"   onclick="toggleMood(this)" title="Tearful">&#128557;</button>
+          <button class="mood-btn" data-mood="Hopeful"   onclick="toggleMood(this)" title="Hopeful">&#127775;</button>
+          <button class="mood-btn" data-mood="Foggy"     onclick="toggleMood(this)" title="Brain foggy">&#129504;</button>
+        </div>
+      </div>
+      <div>
+        <label>Mood Intensity</label>
+        <input type="range" id="mood-intensity" min="1" max="5" value="3">
+        <div class="slider-labels"><span>Mild</span><span>Intense</span></div>
+        <br>
+        <label>Energy</label>
+        <input type="range" id="energy-slider" min="1" max="5" value="3">
+        <div class="slider-labels"><span>Drained</span><span>Vibrant</span></div>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div>
+        <label>Sleep Quality</label>
+        <input type="range" id="sleep-slider" min="1" max="5" value="3">
+        <div class="slider-labels"><span>Poor</span><span>Great</span></div>
+      </div>
+      <div>
+        <label>Activity Level</label>
+        <select id="activity-select">
+          <option value="">-- Select --</option>
+          <option value="rest">Rest day</option>
+          <option value="light">Light (walk, yoga)</option>
+          <option value="moderate">Moderate (30 min+)</option>
+          <option value="intense">Intense (vigorous)</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="form-row full">
+      <label>Hydration <span class="info" onclick="toggleTip('tip-water')">&#9432;</span></label>
+      <div class="tooltip-box" id="tip-water"><strong>Why hydration matters:</strong> Dehydration can worsen hot flashes, headaches and brain fog. Aim for 6&#8211;8 glasses daily. Oestrogen decline can also reduce the sensation of thirst.</div>
+      <div class="water-row" id="water-row"></div>
+    </div>
+
+    <div class="form-row full">
+      <label>Notes</label>
+      <textarea id="log-notes" placeholder="Anything else you want to remember..."></textarea>
+    </div>
+
+    <button class="btn-primary" onclick="saveLog()">Save Entry</button>
+  </div>
+
+  <!-- HRT logged today -->
+  <div class="card" id="log-meds-card">
+    <div class="card-title">&#128138; Medications Today
+      <span class="tip" onclick="showTab('settings')">Go to Settings &#8250;</span>
+    </div>
+    <div id="log-meds-list"></div>
+  </div>
+  <!-- Inline overwrite warning -->
+  <div id="overwrite-warn" style="display:none;background:rgba(232,200,122,0.1);border:1px solid rgba(232,200,122,0.4);border-radius:14px;padding:16px 20px;margin-bottom:14px;">
+    <div style="font-size:0.86rem;color:var(--gold);margin-bottom:10px;">&#9888; You already have an entry for this date. Update it?</div>
+    <div style="display:flex;gap:10px;">
+      <button class="btn-primary" style="flex:1;padding:10px" onclick="confirmOverwrite()">Yes, update entry</button>
+      <button class="btn-secondary" style="flex:1;padding:10px" onclick="cancelOverwrite()">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ CALENDAR ══════════════════════════════════════════════════ -->
+<div class="panel" id="panel-calendar">
+  <div class="card">
+    <div class="calendar-header">
+      <button class="cal-nav" onclick="changeMonth(-1)">&#8249;</button>
+      <div class="cal-month" id="cal-month-label"></div>
+      <button class="cal-nav" onclick="changeMonth(1)">&#8250;</button>
+    </div>
+    <div class="cal-grid" id="cal-grid"></div>
+  </div>
+  <div class="card" style="display:flex;gap:12px;flex-wrap:wrap;align-items:center;padding:14px 20px;">
+    <span style="font-size:0.68rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-dim)">Legend:</span>
+    <span style="font-size:0.76rem;color:#f5dde2">&#9679; Spot</span>
+    <span style="font-size:0.76rem;color:var(--flow-light)">&#9679; Light</span>
+    <span style="font-size:0.76rem;color:var(--flow-medium)">&#9679; Medium</span>
+    <span style="font-size:0.76rem;color:var(--flow-heavy)">&#9679; Heavy</span>
+    <span style="font-size:0.76rem;color:var(--accent3)">&#9679; No Flow</span>
+    <span style="font-size:0.76rem;color:var(--gold)">&#9679; Predicted</span>
+  </div>
+</div>
+
+<!-- ══ HISTORY ══════════════════════════════════════════════════ -->
+<div class="panel" id="panel-history">
+  <div id="history-list"></div>
+</div>
+
+<!-- ══ TRENDS (merged Predict + Insights) ═══════════════════════ -->
+<div class="panel" id="panel-trends">
+
+  <!-- Sub-navigation -->
+  <div style="display:flex;gap:8px;margin-bottom:18px;flex-wrap:wrap;">
+    <button class="subnav active" id="sub-predict"  onclick="showSub('predict')">&#128302; Predict</button>
+    <button class="subnav"        id="sub-insights" onclick="showSub('insights')">&#128202; Insights</button>
+    <button class="subnav"        id="sub-report"   onclick="showSub('report')">&#128196; Report</button>
+  </div>
+
+  <!-- PREDICT sub-panel -->
+  <div id="sub-panel-predict">
+    <div id="stage-container"></div>
+    <div id="overdue-banner"></div>
+    <div class="card">
+      <div class="card-title">&#128302; Upcoming Predictions</div>
+      <div id="pred-list" class="pred-list"></div>
+      <div id="cycle-note" class="cycle-note"></div>
+    </div>
+    <div id="anomaly-container"></div>
+    <div class="card">
+      <div class="card-title">&#128208; How This Works</div>
+      <p style="font-size:0.8rem;color:var(--text-dim);line-height:1.7">Predictions use dates imported from your previous app, each with a <strong style="color:var(--text)">&#177;3 day window</strong>. A period marked <span style="color:#f0a090">Late</span> means today has passed its window &#8212; very common in perimenopause. As you continue logging, predictions will adapt to your actual data.</p>
+    </div>
+  </div>
+
+  <!-- INSIGHTS sub-panel -->
+  <div id="sub-panel-insights" style="display:none">
+    <div class="card">
+      <div class="card-title">&#128200; 30-Day Trends</div>
+      <div id="trend-chart"></div>
+    </div>
+    <div class="card">
+      <div class="card-title">&#128202; Your Patterns</div>
+      <div class="stat-grid" id="stat-grid"></div>
+    </div>
+    <div class="card">
+      <div class="card-title">&#127774; Mood Patterns</div>
+      <div id="mood-insights"></div>
+    </div>
+    <div class="card">
+      <div class="card-title">&#127807; Symptom Frequency</div>
+      <div id="symptom-bars"></div>
+    </div>
+    <div class="card">
+      <div class="card-title">&#127991; Custom Tag Frequency</div>
+      <div id="custom-tag-bars"></div>
+    </div>
+    <div class="card">
+      <div class="card-title">&#9889; Trigger Correlations</div>
+      <div id="trigger-insights"></div>
+    </div>
+    <div class="card" id="med-corr-card">
+      <div class="card-title">&#128138; Medication Insights</div>
+      <div id="med-insights"></div>
+    </div>
+    <div class="card">
+      <div class="card-title">&#127754; Hormone Pattern Detection</div>
+      <div id="hormone-insights"></div>
+    </div>
+    <div class="card">
+      <div class="card-title">&#129656; Flow Summary</div>
+      <div id="flow-summary"></div>
+    </div>
+  </div>
+
+  <!-- REPORT sub-panel -->
+  <div id="sub-panel-report" style="display:none">
+    <div class="card">
+      <div class="card-title">&#128196; Health Report</div>
+      <p style="font-size:0.8rem;color:var(--text-dim);line-height:1.6;margin-bottom:14px">Generate a summary of the past 3 months to share with your GP or menopause specialist. Includes cycles, top symptoms, perimenopause score trend, and sleep/energy averages.</p>
+      <button class="btn-primary" style="margin-bottom:10px" onclick="generateReport()">Generate &amp; Print Report</button>
+      <div id="report-preview"></div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ══ SETTINGS ══════════════════════════════════════════════════ -->
+<div class="panel" id="panel-settings">
+
+  <div class="card">
+    <div class="card-title">&#128100; My Profile</div>
+    <div class="form-row">
+      <div><label>Name</label><input type="text" id="s-name" placeholder="Your name"></div>
+      <div><label>Date of Birth</label><input type="date" id="s-dob"></div>
+    </div>
+
+    <!-- HEIGHT -->
+    <div style="margin-bottom:12px;">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+        <label style="margin-bottom:0">Height</label>
+        <div class="unit-toggle">
+          <button class="unit-btn active" id="h-btn-cm"  onclick="setHeightUnit('cm')">cm</button>
+          <button class="unit-btn"        id="h-btn-ft"  onclick="setHeightUnit('ft')">ft / in</button>
+        </div>
+      </div>
+      <div id="h-cm-row">
+        <input type="number" id="s-height" placeholder="e.g. 165" min="50" max="250">
+      </div>
+      <div id="h-ft-row" style="display:none;">
+        <div style="display:flex;gap:10px;align-items:center;">
+          <div style="flex:1;"><input type="number" id="s-height-ft" placeholder="5" min="3" max="8" style="text-align:center"><div style="text-align:center;font-size:0.7rem;color:var(--text-dim);margin-top:3px">ft</div></div>
+          <div style="flex:1;"><input type="number" id="s-height-in" placeholder="0" min="0" max="11" style="text-align:center"><div style="text-align:center;font-size:0.7rem;color:var(--text-dim);margin-top:3px">in</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- WEIGHT -->
+    <div style="margin-bottom:14px;">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+        <label style="margin-bottom:0">Weight</label>
+        <div class="unit-toggle">
+          <button class="unit-btn active" id="w-btn-kg" onclick="setWeightUnit('kg')">kg</button>
+          <button class="unit-btn"        id="w-btn-st" onclick="setWeightUnit('st')">st / lbs</button>
+          <button class="unit-btn"        id="w-btn-lb" onclick="setWeightUnit('lbs')">lbs</button>
+        </div>
+      </div>
+      <div id="w-kg-row">
+        <input type="number" id="s-weight" placeholder="e.g. 65" min="20" max="300">
+      </div>
+      <div id="w-st-row" style="display:none;">
+        <div style="display:flex;gap:10px;align-items:center;">
+          <div style="flex:1;"><input type="number" id="s-weight-st" placeholder="9" min="4" max="40" style="text-align:center"><div style="text-align:center;font-size:0.7rem;color:var(--text-dim);margin-top:3px">stone</div></div>
+          <div style="flex:1;"><input type="number" id="s-weight-lbs2" placeholder="0" min="0" max="13" style="text-align:center"><div style="text-align:center;font-size:0.7rem;color:var(--text-dim);margin-top:3px">lbs</div></div>
+        </div>
+      </div>
+      <div id="w-lb-row" style="display:none;">
+        <input type="number" id="s-weight-lbs" placeholder="e.g. 140" min="50" max="600">
+      </div>
+    </div>
+
+    <div id="bmi-display" class="bmi-box" style="display:none"></div>
+    <button class="btn-primary" onclick="saveProfile()">Save Profile</button>
+  </div>
+
+  <!-- CYCLE SETTINGS -->
+  <div class="card">
+    <div class="card-title">&#128197; Cycle Settings</div>
+    <p style="font-size:0.8rem;color:var(--text-dim);line-height:1.6;margin-bottom:16px">Set your typical period and cycle length to improve predictions. Luna will use your logged data when available, falling back to these values.</p>
+    <div class="form-row">
+      <div>
+        <label>Typical period length</label>
+        <div style="display:flex;align-items:center;gap:10px;">
+          <input type="number" id="s-period-len" placeholder="5" min="1" max="14" style="width:80px;text-align:center;">
+          <span style="color:var(--text-dim);font-size:0.85rem">days</span>
+        </div>
+        <div style="font-size:0.72rem;color:var(--text-dim);margin-top:5px">How long your period typically lasts</div>
+      </div>
+      <div>
+        <label>Typical cycle length</label>
+        <div style="display:flex;align-items:center;gap:10px;">
+          <input type="number" id="s-cycle-len" placeholder="28" min="15" max="90" style="width:80px;text-align:center;">
+          <span style="color:var(--text-dim);font-size:0.85rem">days</span>
+        </div>
+        <div style="font-size:0.72rem;color:var(--text-dim);margin-top:5px">Days from period start to next period start</div>
+      </div>
+    </div>
+    <button class="btn-primary" onclick="saveCycleSettings()">Save &amp; Recalculate Predictions</button>
+    <div id="cycle-settings-confirm" style="display:none;margin-top:10px;font-size:0.8rem;color:var(--accent3);text-align:center;">&#10003; Saved — predictions updated</div>
+  </div>
+
+  <div class="card" id="med-section">
+    <div class="card-title">&#128138; HRT &amp; Medications</div>
+    <p style="font-size:0.8rem;color:var(--text-dim);line-height:1.6;margin-bottom:14px">Log your HRT or other medications here. They&#8217;ll appear in your daily log and health report so you can correlate doses with symptoms over time.</p>
+    <div class="form-row">
+      <div><label>Medication Name</label><input type="text" id="med-name" placeholder="e.g. Estrogel, Utrogestan"></div>
+      <div>
+        <label>Type</label>
+        <select id="med-type">
+          <option value="gel">Gel</option><option value="patch">Patch</option><option value="pill">Pill / tablet</option>
+          <option value="spray">Spray</option><option value="pessary">Pessary / cream</option><option value="injection">Injection</option><option value="other">Other</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-row">
+      <div><label>Dose</label><input type="text" id="med-dose" placeholder="e.g. 1 pump, 50mcg"></div>
+      <div>
+        <label>Frequency</label>
+        <select id="med-freq">
+          <option value="daily">Daily</option><option value="twice">Twice daily</option><option value="alternate">Alternate days</option>
+          <option value="weekly">Weekly</option><option value="asneeded">As needed</option>
+        </select>
+      </div>
+    </div>
+    <button class="btn-primary" style="margin-bottom:14px" onclick="addMed()">Add Medication</button>
+    <div id="med-list"></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">&#127777;&#65039; Perimenopause Score</div>
+    <p style="font-size:0.8rem;color:var(--text-dim);line-height:1.6;margin-bottom:14px">Rate how much each symptom has affected you <strong style="color:var(--text)">over the past month</strong>. Save monthly to track how perimenopause is affecting your wellbeing over time.</p>
+    <div id="peri-score-form"></div>
+    <button class="btn-primary" style="margin-top:14px" onclick="savePeriscore()">Save Score</button>
+  </div>
+
+  <div class="card">
+    <div class="card-title">&#128200; Score History</div>
+    <div id="peri-score-sparkline" style="margin-bottom:14px"></div>
+    <div id="peri-score-history"></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">&#128276; Reminders</div>
+    <p style="font-size:0.8rem;color:var(--text-dim);line-height:1.6;margin-bottom:14px">Enable browser notifications so Luna can remind you to log each day. You&#8217;ll be asked for notification permission when you turn this on.</p>
+    <div class="notif-row">
+      <div>
+        <div style="font-size:0.86rem;color:var(--text)">Daily logging reminder</div>
+        <div style="font-size:0.74rem;color:var(--text-dim);margin-top:2px">Evening nudge to log your day &#127769;</div>
+      </div>
+      <label class="toggle"><input type="checkbox" id="notif-toggle" onchange="toggleNotif()"><span class="toggle-slider"></span></label>
+    </div>
+    <div id="notif-status" style="font-size:0.76rem;color:var(--text-dim);margin-top:10px;"></div>
+    <div style="margin-top:10px;padding:10px 12px;background:rgba(232,200,122,0.08);border:1px solid rgba(232,200,122,0.25);border-radius:10px;font-size:0.74rem;color:var(--text-dim);line-height:1.5;">
+      &#9432; Reminders only work while this browser tab is open. For reliable daily reminders, consider bookmarking Luna and opening it each morning.
+    </div>
+  </div>
+
+  <!-- Learn section moved here from own tab -->
+  <div class="card">
+    <div class="card-title">&#128218; Learn: Understanding Perimenopause</div>
+    <p style="font-size:0.82rem;color:var(--text-dim);line-height:1.6;margin-bottom:14px">Evidence-based information to help you feel more confident about what&#8217;s happening in your body and in conversations with your doctor.</p>
+    <div id="learn-content"></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">&#127991; Custom Tags</div>
+    <p style="font-size:0.8rem;color:var(--text-dim);line-height:1.6;margin-bottom:14px">Create your own tags for anything not covered by the standard symptom and trigger lists. Tags you save here appear as chips in the Log Day form and are included in your Insights analysis.</p>
+    <div class="chip-grid" id="settings-tag-grid" style="margin-bottom:12px"></div>
+    <div style="display:flex;gap:8px;">
+      <input type="text" id="settings-tag-input" placeholder="New tag name..." style="flex:1;background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:9px 14px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:0.82rem;" onkeydown="if(event.key==='Enter')saveCustomTag()">
+      <button class="btn-primary" style="padding:9px 18px" onclick="saveCustomTag()">Save Tag</button>
+    </div>
+    <div id="settings-tag-status" style="font-size:0.75rem;color:var(--text-dim);margin-top:8px;"></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">&#10084;&#65039; Apple Health</div>
+    <div style="background:rgba(125,211,192,0.08);border:1px solid rgba(125,211,192,0.25);border-radius:12px;padding:14px 16px;margin-bottom:14px;">
+      <div style="font-size:0.82rem;font-weight:500;color:var(--accent3);margin-bottom:6px;">&#9432; How Apple Health sync works in Luna</div>
+      <div style="font-size:0.78rem;color:var(--text-dim);line-height:1.7">
+        Luna runs entirely in your browser as a local HTML file. Apple's HealthKit API is only available to <strong style="color:var(--text)">native iOS apps</strong> installed through the App Store — it cannot be accessed from a website or browser-based app, by Apple's design.<br><br>
+        <strong style="color:var(--text)">What Luna can do:</strong> You can export your Luna data as a JSON backup and a future native app version could read from HealthKit directly. Until then, the best bridge is <strong style="color:var(--text)">manual CSV import</strong> from any health tracker that exports data.
+      </div>
+    </div>
+    <div style="font-size:0.82rem;color:var(--text-dim);margin-bottom:10px;line-height:1.6">In the meantime, you can import health data exported from Apple Health or wearables (Oura, Garmin, Fitbit) using the CSV import below. Luna will read <strong style="color:var(--text)">resting heart rate, sleep duration</strong> and <strong style="color:var(--text)">body temperature</strong> columns if present and merge them into your daily logs.</div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;">
+      <button class="btn-secondary" onclick="document.getElementById('health-csv-file').click()" style="flex:1">&#128196; Import Health CSV</button>
+      <button class="btn-secondary" onclick="showHealthExportGuide()" style="flex:1">&#63; How to export</button>
+    </div>
+    <input type="file" id="health-csv-file" accept=".csv" style="display:none" onchange="importHealthCSV(event)">
+    <div id="health-import-status" style="font-size:0.76rem;color:var(--text-dim);margin-top:10px;"></div>
+    <div id="health-export-guide" style="display:none;margin-top:14px;background:var(--surface2);border-radius:10px;padding:14px;font-size:0.78rem;color:var(--text-dim);line-height:1.8;">
+      <strong style="color:var(--text);display:block;margin-bottom:8px;">How to export from Apple Health:</strong>
+      1. Open the <strong style="color:var(--text)">Health app</strong> &#8594; tap your profile photo<br>
+      2. Tap <strong style="color:var(--text)">Export All Health Data</strong> &#8594; Share &#8594; Save to Files<br>
+      3. This creates a ZIP containing XML files — use a third-party app like <strong style="color:var(--text)">Health Export CSV</strong> (App Store, free tier available) to convert to CSV<br>
+      4. Import the resulting CSV here<br><br>
+      <strong style="color:var(--text);display:block;margin-bottom:8px;">From Oura / Garmin / Fitbit:</strong>
+      Log in to their web dashboard &#8594; Account &#8594; Export Data &#8594; choose CSV &#8594; import here.<br><br>
+      <strong style="color:var(--text)">Columns Luna looks for:</strong> date, resting_heart_rate, sleep_duration_hours, temperature_deviation (or skin_temp_deviation)
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">&#128274; Privacy &amp; Data</div>
+    <div class="privacy-note">
+      <strong>Your data never leaves your device.</strong> Luna stores everything in your browser&#8217;s local storage &#8212; it is not uploaded, shared, or transmitted anywhere. No account is required. No third parties can access your health data.<br><br>
+      Use <strong>Export Backup</strong> to download all your data as a JSON file. Use <strong>Import Backup</strong> to restore it on a new device or after clearing your browser.
+    </div>
+    <br>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;">
+      <button class="btn-secondary" onclick="exportData()" style="flex:1">&#128229; Export Backup</button>
+      <button class="btn-secondary" onclick="document.getElementById('import-file').click()" style="flex:1">&#128228; Import Backup</button>
+    </div>
+    <input type="file" id="import-file" accept=".json" style="display:none" onchange="importData(event)">
+    <div id="import-status" style="font-size:0.76rem;color:var(--text-dim);margin-top:10px;"></div>
+  </div>
+
+</div>
+</div><!-- /.app -->
+
+<!-- Detail overlay -->
+<div class="detail-overlay" id="detail-overlay" onclick="closeDetail(event)">
+  <div class="detail-card">
+    <button class="close-btn" onclick="closeDetail()">&#215;</button>
+    <div id="detail-content"></div>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script src="luna.js"></script>
+</body>
+</html>
