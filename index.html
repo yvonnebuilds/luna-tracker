@@ -95,9 +95,20 @@
 
     <div class="form-row">
       <div>
-        <label>Sleep Quality</label>
-        <input type="range" id="sleep-slider" min="1" max="5" value="3">
-        <div class="slider-labels"><span>Poor</span><span>Great</span></div>
+        <label>Sleep Quality
+          <span id="sleep-mode-toggle" onclick="toggleSleepMode()" style="font-size:0.7rem;color:var(--accent1);cursor:pointer;margin-left:8px;border:1px solid var(--accent1);border-radius:10px;padding:2px 8px;font-weight:400;"></span>
+        </label>
+        <div id="sleep-scale-wrap">
+          <input type="range" id="sleep-slider" min="1" max="5" value="3">
+          <div class="slider-labels"><span>Poor</span><span>Great</span></div>
+        </div>
+        <div id="sleep-pct-wrap" style="display:none;">
+          <div style="display:flex;align-items:center;gap:10px;margin-top:4px;">
+            <input type="number" id="sleep-pct" min="0" max="100" placeholder="e.g. 78" style="width:80px;text-align:center;background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:8px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:0.9rem;">
+            <span style="color:var(--text-dim);font-size:0.85rem">% sleep score</span>
+          </div>
+          <div style="font-size:0.72rem;color:var(--text-dim);margin-top:4px;">Enter your watch sleep score (0–100)</div>
+        </div>
       </div>
       <div>
         <label>Activity Level</label>
@@ -330,7 +341,64 @@
     <div id="cycle-settings-confirm" style="display:none;margin-top:10px;font-size:0.8rem;color:var(--accent3);text-align:center;">&#10003; Saved — predictions updated</div>
   </div>
 
-  <div class="card" id="med-section">
+  <div class="card">
+    <div class="card-title">&#129514; Blood Test Results</div>
+    <p style="font-size:0.8rem;color:var(--text-dim);line-height:1.6;margin-bottom:6px">Log key values from your blood tests to track hormone trends over time. Always discuss your results with your GP.</p>
+    <div style="background:rgba(125,211,192,0.08);border:1px solid rgba(125,211,192,0.2);border-radius:10px;padding:10px 14px;margin-bottom:16px;font-size:0.76rem;color:var(--text-dim);line-height:1.6;">
+      &#9432; Enter values exactly as shown on your results. Luna stores them locally and plots trends — it does not interpret or diagnose. Reference ranges vary by lab, so always refer to your own lab&#8217;s ranges.
+    </div>
+    <div class="form-row">
+      <div>
+        <label>Date of test</label>
+        <input type="date" id="blood-date">
+      </div>
+      <div>
+        <label>Lab / source <span style="font-size:0.72rem;color:var(--text-dim)">(optional)</span></label>
+        <input type="text" id="blood-lab" placeholder="e.g. NHS, Medichecks">
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px;">
+      <div>
+        <label style="font-size:0.75rem;color:var(--text-dim);display:block;margin-bottom:4px;">FSH <span style="color:var(--text-dim);font-weight:300">(IU/L)</span></label>
+        <input type="number" id="blood-fsh" placeholder="e.g. 14.2" step="0.1" style="width:100%">
+      </div>
+      <div>
+        <label style="font-size:0.75rem;color:var(--text-dim);display:block;margin-bottom:4px;">LH <span style="color:var(--text-dim);font-weight:300">(IU/L)</span></label>
+        <input type="number" id="blood-lh" placeholder="e.g. 8.5" step="0.1" style="width:100%">
+      </div>
+      <div>
+        <label style="font-size:0.75rem;color:var(--text-dim);display:block;margin-bottom:4px;">Oestradiol <span style="color:var(--text-dim);font-weight:300">(pmol/L)</span></label>
+        <input type="number" id="blood-e2" placeholder="e.g. 180" step="0.1" style="width:100%">
+      </div>
+      <div>
+        <label style="font-size:0.75rem;color:var(--text-dim);display:block;margin-bottom:4px;">Progesterone <span style="color:var(--text-dim);font-weight:300">(nmol/L)</span></label>
+        <input type="number" id="blood-prog" placeholder="e.g. 2.1" step="0.1" style="width:100%">
+      </div>
+      <div>
+        <label style="font-size:0.75rem;color:var(--text-dim);display:block;margin-bottom:4px;">Testosterone <span style="color:var(--text-dim);font-weight:300">(nmol/L)</span></label>
+        <input type="number" id="blood-testo" placeholder="e.g. 0.9" step="0.1" style="width:100%">
+      </div>
+      <div>
+        <label style="font-size:0.75rem;color:var(--text-dim);display:block;margin-bottom:4px;">TSH <span style="color:var(--text-dim);font-weight:300">(mIU/L)</span></label>
+        <input type="number" id="blood-tsh" placeholder="e.g. 2.3" step="0.1" style="width:100%">
+      </div>
+      <div>
+        <label style="font-size:0.75rem;color:var(--text-dim);display:block;margin-bottom:4px;">Vit D <span style="color:var(--text-dim);font-weight:300">(nmol/L)</span></label>
+        <input type="number" id="blood-vitd" placeholder="e.g. 62" step="0.1" style="width:100%">
+      </div>
+      <div>
+        <label style="font-size:0.75rem;color:var(--text-dim);display:block;margin-bottom:4px;">Ferritin <span style="color:var(--text-dim);font-weight:300">(ug/L)</span></label>
+        <input type="number" id="blood-ferritin" placeholder="e.g. 45" step="0.1" style="width:100%">
+      </div>
+    </div>
+    <div>
+      <label style="font-size:0.75rem;color:var(--text-dim);display:block;margin-bottom:4px;">Notes <span style="font-weight:300">(optional)</span></label>
+      <input type="text" id="blood-notes" placeholder="e.g. fasting sample, cycle day 3" style="width:100%">
+    </div>
+    <button class="btn-primary" style="margin-top:14px" onclick="saveBloodResult()">Save Result</button>
+    <div id="blood-save-status" style="font-size:0.76rem;color:var(--text-dim);margin-top:8px;"></div>
+    <div id="blood-history" style="margin-top:16px;"></div>
+  </div>
     <div class="card-title">&#128138; HRT &amp; Medications</div>
     <p style="font-size:0.8rem;color:var(--text-dim);line-height:1.6;margin-bottom:14px">Log your HRT or other medications here. They&#8217;ll appear in your daily log and health report so you can correlate doses with symptoms over time.</p>
     <div class="form-row">
@@ -383,6 +451,14 @@
     <div id="notif-status" style="font-size:0.76rem;color:var(--text-dim);margin-top:10px;"></div>
     <div style="margin-top:10px;padding:10px 12px;background:rgba(232,200,122,0.08);border:1px solid rgba(232,200,122,0.25);border-radius:10px;font-size:0.74rem;color:var(--text-dim);line-height:1.5;">
       &#9432; Reminders only work while this browser tab is open. For reliable daily reminders, consider bookmarking Luna and opening it each morning.
+    </div>
+    <div style="margin-top:16px;padding-top:14px;border-top:1px solid var(--border);">
+      <div style="font-size:0.86rem;color:var(--text);margin-bottom:4px;">Sleep score format</div>
+      <div style="font-size:0.74rem;color:var(--text-dim);margin-bottom:10px;">Choose how you log sleep quality — a simple 1&#8211;5 scale, or the percentage score from your smart watch (Oura, Garmin, Fitbit etc.)</div>
+      <div style="display:flex;gap:8px;">
+        <button id="sleep-mode-btn-scale" onclick="setSleepModePref('scale')" style="flex:1;padding:9px;border-radius:10px;border:1px solid var(--border);background:var(--surface2);color:var(--text-dim);font-family:'DM Sans',sans-serif;font-size:0.8rem;cursor:pointer;">1&#8211;5 Scale</button>
+        <button id="sleep-mode-btn-pct" onclick="setSleepModePref('pct')" style="flex:1;padding:9px;border-radius:10px;border:1px solid var(--border);background:var(--surface2);color:var(--text-dim);font-family:'DM Sans',sans-serif;font-size:0.8rem;cursor:pointer;">% Watch Score</button>
+      </div>
     </div>
   </div>
 

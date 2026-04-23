@@ -1,7 +1,7 @@
 // ═══════════════════════════════════════════════════════════════
 // DATA CONSTANTS
 // ═══════════════════════════════════════════════════════════════
-var SYMPTOMS = ['Hot flashes','Night sweats','Brain fog','Insomnia','Joint pain','Headache','Bloating','Breast tenderness','Cramps','Back pain','Vaginal dryness','Low libido','Heart palpitations','Dizziness','Fatigue','Chills','Nausea','Skin changes','Hair thinning','Weight changes'];
+var SYMPTOMS = ['Hot flashes','Night sweats','Brain fog','Insomnia','Joint pain','Headache','Bloating','Breast tenderness','Cramps','Back pain','Vaginal dryness','Dry mouth / tingly tongue','Low libido','Heart palpitations','Dizziness','Fatigue','Chills','Nausea','Skin changes','Hair thinning','Weight changes'];
 var TRIGGERS = ['Stress','Alcohol','Caffeine','Poor sleep','Spicy food','Hot drinks','Exercise','Dehydration','Refined sugar','Late night','THC / Cannabis','CBD'];
 var FLOW_COLORS = {none:'var(--accent3)',spot:'#f5dde2',light:'var(--flow-light)',medium:'var(--flow-medium)',heavy:'var(--flow-heavy)'};
 var HISTORICAL = []; // seed data removed for public release
@@ -51,6 +51,7 @@ var LEARN_ARTICLES = [
   {q:'What is HRT and how does it help?',ukBadge:true,a:'<strong>Hormone Replacement Therapy (HRT)</strong> replaces the oestrogen (and sometimes progesterone) that the ovaries are no longer producing. It is the most effective treatment for perimenopausal symptoms.<br><br>Modern HRT comes in many forms: patches, gels, sprays, pills and pessaries. The type, dose and application method are tailored to each individual. <strong>Body-identical HRT</strong> (regulated by the MHRA) has a well-established safety profile for most women.<div class="highlight">Current NICE guidelines recommend HRT be offered to women with perimenopausal symptoms. If you\'re interested, ask your GP or visit a menopause specialist.</div>'},
   {q:'What is brain fog?',a:'Brain fog &#8212; difficulty concentrating, forgetting words, feeling mentally slow &#8212; is one of the most distressing and least-discussed symptoms of perimenopause. It\'s caused by <strong>oestrogen\'s effect on the hippocampus</strong>, the brain region central to memory and learning.<br><br>It typically improves once hormone levels stabilise (either naturally post-menopause or with HRT). Sleep deprivation and stress worsen it significantly.'},
   {q:'How does perimenopause affect sleep?',a:'Falling progesterone (which has a sedative effect) and night sweats disrupt sleep architecture, reducing <strong>deep and REM sleep</strong>. Poor sleep then cascades into worse fatigue, brain fog and mood symptoms.<br><br>Sleep hygiene strategies that help include: keeping the bedroom cool, avoiding alcohol and caffeine after 2pm, consistent sleep times, and addressing night sweats (HRT is highly effective for this).'},
+  {q:'What do my hormone blood test results mean?',a:'Blood tests are one of the most useful tools for understanding where you are in perimenopause, but the results can be confusing. Here\'s what the key markers mean:<br><br><strong style="color:var(--accent1)">FSH (Follicle Stimulating Hormone)</strong> — produced by the pituitary gland to stimulate egg development. Rising FSH is a key indicator of perimenopause as the ovaries become less responsive. A reading above 10 IU/L suggests the ovaries are working harder; above 30 IU/L on two tests 6 weeks apart is used to confirm menopause in the UK for women over 50. <em>Note: FSH fluctuates significantly in perimenopause — a single reading can be misleading.</em><br><br><strong style="color:var(--accent1)">LH (Luteinising Hormone)</strong> — works alongside FSH to trigger ovulation. Rises with FSH as ovarian function declines.<br><br><strong style="color:var(--accent1)">Oestradiol (E2)</strong> — the main form of oestrogen. Levels fluctuate widely in perimenopause rather than declining steadily, which is why symptoms can feel unpredictable. Low oestradiol contributes to hot flashes, brain fog, vaginal dryness and bone loss.<br><br><strong style="color:var(--accent1)">Progesterone</strong> — produced after ovulation. Low progesterone (below 3 nmol/L mid-luteal) suggests anovulatory cycles are becoming more frequent — a hallmark of perimenopause.<br><br><strong style="color:var(--accent1)">Testosterone</strong> — often overlooked in women but important for energy, libido and mood. Declines gradually from the mid-30s.<br><br><strong style="color:var(--accent1)">TSH (Thyroid Stimulating Hormone)</strong> — thyroid dysfunction is common in perimenopausal women and can mimic or worsen symptoms. Worth checking if fatigue, weight gain or brain fog are prominent.<br><br><strong style="color:var(--accent1)">Vitamin D</strong> — deficiency is extremely common and worsens fatigue, mood and bone health. Optimal levels are generally considered above 75 nmol/L.<br><br><strong style="color:var(--accent1)">Ferritin</strong> — iron stores. Heavy or irregular periods can deplete ferritin, causing fatigue that is often mistaken for perimenopausal exhaustion.<div class="highlight">Reference ranges vary between labs. Always discuss your specific results with your GP or a menopause specialist — context matters as much as the numbers.</div>'},
   {q:'When should I see a doctor?',a:'Speak to your GP if:<br><ul style="margin:8px 0 0 16px;line-height:2;"><li>Symptoms are affecting your daily life</li><li>You have bleeding after confirmed menopause</li><li>You have very frequent spotting or prolonged heavy periods</li><li>Mood symptoms are severe or you feel you can\'t cope</li><li>You\'d like to discuss HRT or other treatments</li></ul><div class="highlight">You can also ask for a referral to a menopause specialist clinic. Many GPs now have specific menopause training.</div>'},
   {q:'What is PMDD and could it explain my symptoms?',a:'<strong>Premenstrual Dysphoric Disorder (PMDD)</strong> is a severe, hormone-sensitive mood disorder that causes significant psychological and physical symptoms in the 1&#8211;2 weeks before a period (the luteal phase), which resolve once bleeding begins.<br><br>PMDD affects around <strong>3&#8211;8% of people who menstruate</strong> and is distinct from ordinary PMS &#8212; the mood symptoms are often disabling, not merely uncomfortable. Common symptoms include severe anxiety, rage, depression, irritability, feeling out of control, insomnia, and brain fog &#8212; all time-locked to the luteal phase.<br><br><strong>PMDD and perimenopause often overlap</strong> and can be confused with each other. Fluctuating oestrogen in perimenopause can worsen pre-existing PMDD, and the luteal-phase pattern of PMDD can be mistaken for generalised perimenopausal mood instability.<div class="highlight">The key distinguishing feature of PMDD is <strong>cyclical timing</strong> &#8212; symptoms appear in the 1&#8211;2 weeks before your period and lift within a few days of it starting. Luna\'s daily logging can help you identify whether your mood symptoms follow this pattern.</div>If you suspect PMDD, speak to your GP. Treatment options include SSRIs (which can be taken only in the luteal phase), hormonal treatments such as the combined pill or HRT, and psychological support. PMDD is a recognised medical condition &#8212; you deserve specialist assessment and support.'},
   {q:'What is endometriosis?',a:'<strong>Endometriosis</strong> is a chronic condition where tissue similar to the lining of the womb grows outside it &#8212; on the ovaries, fallopian tubes, bowel, bladder, or elsewhere. It affects around <strong>1 in 10 people with a uterus</strong> and takes an average of 7&#8211;9 years to diagnose.<br><br>Common symptoms include:<ul style="margin:8px 0 0 16px;line-height:2;"><li>Severe period pain (beyond typical cramping)</li><li>Pelvic pain throughout the cycle</li><li>Pain during or after sex</li><li>Heavy or irregular bleeding</li><li>Fatigue, bloating, bowel or bladder symptoms</li><li>Difficulty conceiving</li></ul>Endometriosis symptoms can overlap with perimenopause, particularly around pain, fatigue, and irregular bleeding. Some people are diagnosed with both simultaneously.<div class="highlight"><strong>Luna is not designed to track endometriosis</strong> &#8212; it is a complex condition that deserves a dedicated tool and specialist care. If you recognise these symptoms, please speak to your GP and ask for a referral to a gynaecologist or endometriosis specialist. Endometriosis UK (endometriosis-uk.org) provides excellent support and resources.</div>'}
@@ -181,7 +182,9 @@ function commitLog(date) {
     customTags:Object.keys(selCustomTags),
     moods:Object.keys(selMoods),moodIntensity:Number(document.getElementById('mood-intensity').value),
     energy:Number(document.getElementById('energy-slider').value),
-    sleep:Number(document.getElementById('sleep-slider').value),
+    sleep:(function(){var sv=getSleepValue();return sv.val;}()),
+    sleepPct:(function(){var sv=getSleepValue();return sv.raw;}()),
+    sleepMode:(function(){var sv=getSleepValue();return sv.mode;}()),
     water:waterGlasses,
     activity:document.getElementById('activity-select').value,
     notes:document.getElementById('log-notes').value
@@ -199,6 +202,7 @@ function resetLogForm(){
   document.getElementById('mood-intensity').value=3;
   document.getElementById('energy-slider').value=3;
   document.getElementById('sleep-slider').value=3;
+  var spEl=document.getElementById('sleep-pct');if(spEl)spEl.value='';
   document.getElementById('activity-select').value='';
   document.getElementById('log-notes').value='';
   document.getElementById('log-date').value=tod();
@@ -519,7 +523,7 @@ function showDetail(ds) {
   if(log.triggers&&log.triggers.length)h+='<div class="detail-row"><div class="detail-label">Triggers</div><div class="detail-val">'+log.triggers.map(function(s){return '<span class="tag trig">'+s+'</span>';}).join('')+'</div></div>';
   if(log.moods&&log.moods.length)h+='<div class="detail-row"><div class="detail-label">Mood</div><div class="detail-val">'+log.moods.join(', ')+(log.moodIntensity?' (intensity '+log.moodIntensity+'/5)':'')+'</div></div>';
   if(log.energy)h+='<div class="detail-row"><div class="detail-label">Energy</div><div class="detail-val">'+(EL[log.energy]||log.energy)+'</div></div>';
-  if(log.sleep)h+='<div class="detail-row"><div class="detail-label">Sleep</div><div class="detail-val">'+(EL[log.sleep]||log.sleep)+'</div></div>';
+  if(log.sleep)h+='<div class="detail-row"><div class="detail-label">Sleep</div><div class="detail-val">'+(log.sleepMode==='pct'&&log.sleepPct!==null?log.sleepPct+'%':(EL[log.sleep]||log.sleep))+'</div></div>';
   if(log.water)h+='<div class="detail-row"><div class="detail-label">Water</div><div class="detail-val">'+log.water+' glasses</div></div>';
   if(log.activity)h+='<div class="detail-row"><div class="detail-label">Activity</div><div class="detail-val">'+(ACT[log.activity]||log.activity)+'</div></div>';
   if(log.notes)h+='<div class="detail-row"><div class="detail-label">Notes</div><div class="detail-val" style="font-style:italic;color:var(--text-dim)">'+log.notes+'</div></div>';
@@ -575,7 +579,12 @@ function loadEntryForEdit(ds) {
   var enEl=document.getElementById('energy-slider');
   if(enEl&&log.energy) enEl.value=log.energy;
   var slEl=document.getElementById('sleep-slider');
-  if(slEl&&log.sleep) slEl.value=log.sleep;
+  var spEl=document.getElementById('sleep-pct');
+  if(log.sleepMode==='pct'&&log.sleepPct!==null&&spEl){
+    spEl.value=log.sleepPct;
+  } else if(slEl&&log.sleep){
+    slEl.value=log.sleep;
+  }
   // Water
   waterGlasses=log.water||0;
   buildWaterRow(waterGlasses);
@@ -1232,6 +1241,8 @@ function setWeightUnit(u) {
 
 function renderSettings() {
   renderSettingsTagGrid();
+  renderBloodHistory();
+  applySleepMode(getSleepMode());
   var s=getSettings();
   document.getElementById('s-name').value=s.name||'';
   document.getElementById('s-dob').value=s.dob||'';
@@ -1290,11 +1301,105 @@ function saveCycleSettings() {
   var conf=document.getElementById('cycle-settings-confirm');
   conf.style.display='block';
   setTimeout(function(){conf.style.display='none';},3000);
-  // If predictions tab is open, re-render
   try {
     var predPanel=document.getElementById('sub-panel-predict');
     if(predPanel&&predPanel.style.display!=='none') renderPredict();
   } catch(e) {}
+}
+
+// ═══════════════════════════════════════════════════════════════
+// BLOOD TEST RESULTS
+// ═══════════════════════════════════════════════════════════════
+function saveBloodResult() {
+  var statusEl = document.getElementById('blood-save-status');
+  var date = document.getElementById('blood-date').value;
+  if(!date){statusEl.textContent='Please select the date of your test.';return;}
+
+  var result = {
+    date:   date,
+    lab:    document.getElementById('blood-lab').value.trim(),
+    fsh:    document.getElementById('blood-fsh').value,
+    lh:     document.getElementById('blood-lh').value,
+    e2:     document.getElementById('blood-e2').value,
+    prog:   document.getElementById('blood-prog').value,
+    testo:  document.getElementById('blood-testo').value,
+    tsh:    document.getElementById('blood-tsh').value,
+    vitd:   document.getElementById('blood-vitd').value,
+    ferritin: document.getElementById('blood-ferritin').value,
+    notes:  document.getElementById('blood-notes').value.trim()
+  };
+
+  // Check at least one value was entered
+  var hasValues = ['fsh','lh','e2','prog','testo','tsh','vitd','ferritin'].some(function(k){return result[k]!=='';});
+  if(!hasValues){statusEl.textContent='Please enter at least one test value.';return;}
+
+  // Convert filled values to numbers, leave empty as null
+  ['fsh','lh','e2','prog','testo','tsh','vitd','ferritin'].forEach(function(k){
+    result[k] = result[k]!=='' ? Number(result[k]) : null;
+  });
+
+  var s = getSettings();
+  s.bloodResults = s.bloodResults||[];
+  s.bloodResults.push(result);
+  s.bloodResults.sort(function(a,b){return a.date.localeCompare(b.date);});
+  saveSettings(s);
+
+  // Clear form
+  ['blood-date','blood-lab','blood-fsh','blood-lh','blood-e2','blood-prog',
+   'blood-testo','blood-tsh','blood-vitd','blood-ferritin','blood-notes'].forEach(function(id){
+    document.getElementById(id).value='';
+  });
+  statusEl.innerHTML='<span style="color:var(--accent3)">&#10003; Result saved for '+fmtDate(date)+'</span>';
+  setTimeout(function(){statusEl.textContent='';},3000);
+  renderBloodHistory();
+}
+
+function deleteBloodResult(index) {
+  if(!confirm('Delete this blood test result?')) return;
+  var s=getSettings();
+  s.bloodResults=s.bloodResults||[];
+  s.bloodResults.splice(index,1);
+  saveSettings(s);
+  renderBloodHistory();
+}
+
+function renderBloodHistory() {
+  var el=document.getElementById('blood-history');
+  if(!el) return;
+  var s=getSettings();
+  var results=(s.bloodResults||[]).slice().reverse(); // newest first
+  if(!results.length){
+    el.innerHTML='<div style="font-size:0.78rem;color:var(--text-dim);padding:8px 0">No blood test results saved yet.</div>';
+    return;
+  }
+
+  var MARKERS=[
+    {k:'fsh',   label:'FSH',          unit:'IU/L'},
+    {k:'lh',    label:'LH',           unit:'IU/L'},
+    {k:'e2',    label:'Oestradiol',   unit:'pmol/L'},
+    {k:'prog',  label:'Progesterone', unit:'nmol/L'},
+    {k:'testo', label:'Testosterone', unit:'nmol/L'},
+    {k:'tsh',   label:'TSH',          unit:'mIU/L'},
+    {k:'vitd',  label:'Vit D',        unit:'nmol/L'},
+    {k:'ferritin',label:'Ferritin',   unit:'ug/L'}
+  ];
+
+  var html='';
+  results.forEach(function(r,i){
+    var realIndex=(s.bloodResults.length-1)-i;
+    var values=MARKERS.filter(function(m){return r[m.k]!==null&&r[m.k]!==undefined;})
+      .map(function(m){return '<span style="display:inline-block;margin:2px 4px 2px 0;font-size:0.76rem;background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:3px 8px;"><strong style="color:var(--accent1)">'+m.label+'</strong> '+r[m.k]+' <span style="color:var(--text-dim)">'+m.unit+'</span></span>';})
+      .join('');
+    html+='<div style="border:1px solid var(--border);border-radius:12px;padding:12px 14px;margin-bottom:10px;">'
+      +'<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">'
+      +'<strong style="font-size:0.85rem">'+fmtDate(r.date)+(r.lab?' <span style="color:var(--text-dim);font-weight:300;font-size:0.75rem">&#183; '+r.lab+'</span>':'')+'</strong>'
+      +'<button onclick="deleteBloodResult('+realIndex+')" style="background:none;border:none;color:var(--text-dim);cursor:pointer;font-size:0.85rem;padding:2px 6px;" title="Delete">&#215;</button>'
+      +'</div>'
+      +values
+      +(r.notes?'<div style="font-size:0.74rem;color:var(--text-dim);margin-top:6px;font-style:italic">'+r.notes+'</div>':'')
+      +'</div>';
+  });
+  el.innerHTML=html;
 }
 
 function saveProfile() {
@@ -1353,6 +1458,52 @@ function savePeriscore(){var s=getSettings();if(!s.periScores)s.periScores={};va
 function renderScoreHist(){
   renderScoreSparkline();
   var s=getSettings(),scores=s.periScores||{},max=PERI_SX.length*4,el=document.getElementById('peri-score-history');var keys=Object.keys(scores).filter(function(k){return k!=='_latest';}).sort(function(a,b){return b.localeCompare(a);});if(!keys.length){el.innerHTML='<div class="empty" style="padding:14px">No scores saved yet.</div>';return;}el.innerHTML=keys.map(function(date){var sc=scores[date],t=Object.values(sc).reduce(function(a,b){return a+Number(b);},0);return '<div class="score-row"><div class="score-date">'+fmtDate(date)+'</div><div class="score-track"><div class="score-bar" style="width:'+Math.round(t/max*100)+'%;background:'+periCol(t)+'"></div></div><div class="score-val" style="color:'+periCol(t)+'">'+t+'/'+max+'</div></div>';}).join('');}
+
+// ═══════════════════════════════════════════════════════════════
+// SLEEP MODE (1-5 scale vs % watch score)
+// ═══════════════════════════════════════════════════════════════
+function getSleepMode() {
+  var s=getSettings();
+  return s.sleepMode||'scale'; // default to 1-5 scale
+}
+function setSleepModePref(mode) {
+  var s=getSettings();s.sleepMode=mode;saveSettings(s);
+  applySleepMode(mode);
+  toast(mode==='pct'?'Sleep logging set to % watch score':'Sleep logging set to 1\u20135 scale');
+}
+function applySleepMode(mode) {
+  var scaleWrap=document.getElementById('sleep-scale-wrap');
+  var pctWrap=document.getElementById('sleep-pct-wrap');
+  var toggleBtn=document.getElementById('sleep-mode-toggle');
+  var btnScale=document.getElementById('sleep-mode-btn-scale');
+  var btnPct=document.getElementById('sleep-mode-btn-pct');
+  if(!scaleWrap||!pctWrap) return;
+  var isPct=mode==='pct';
+  scaleWrap.style.display=isPct?'none':'block';
+  pctWrap.style.display=isPct?'block':'none';
+  if(toggleBtn) toggleBtn.textContent=isPct?'Switch to 1\u20135':'Switch to %';
+  // Highlight active button in settings
+  var activeStyle='background:var(--accent1);border-color:var(--accent1);color:#1a1025;';
+  var inactiveStyle='background:var(--surface2);border-color:var(--border);color:var(--text-dim);';
+  if(btnScale) btnScale.style.cssText=btnScale.style.cssText.replace(/background:[^;]+;border-color:[^;]+;color:[^;]+;/,'')+(!isPct?activeStyle:inactiveStyle);
+  if(btnPct)   btnPct.style.cssText=btnPct.style.cssText.replace(/background:[^;]+;border-color:[^;]+;color:[^;]+;/,'')+(isPct?activeStyle:inactiveStyle);
+}
+function toggleSleepMode() {
+  var current=getSleepMode();
+  setSleepModePref(current==='pct'?'scale':'pct');
+}
+function getSleepValue() {
+  // Returns a normalised 1-5 value regardless of mode, plus raw value
+  var mode=getSleepMode();
+  if(mode==='pct'){
+    var pct=Number(document.getElementById('sleep-pct').value)||null;
+    if(pct===null||pct==='') return {val:null,raw:null,mode:'pct'};
+    // Convert % to 1-5: 0-20=1, 21-40=2, 41-60=3, 61-80=4, 81-100=5
+    var scaled=Math.min(5,Math.max(1,Math.ceil(pct/20)));
+    return {val:scaled,raw:pct,mode:'pct'};
+  }
+  return {val:Number(document.getElementById('sleep-slider').value),raw:null,mode:'scale'};
+}
 
 // Notifications
 function toggleNotif() {
@@ -1475,6 +1626,7 @@ function clearAllData() {
 window.onload = function() {
   var now=new Date();
   document.getElementById('log-date').value=tod();
+  var bdEl=document.getElementById('blood-date');if(bdEl)bdEl.value=tod();
   calYear=now.getFullYear();calMonth=now.getMonth();
 
   // Symptom chips
@@ -1487,6 +1639,7 @@ window.onload = function() {
 
   buildWaterRow(0);
   renderCustomTagGrid();
+  applySleepMode(getSleepMode());
   renderCal();
   renderHistory();
   renderLogMeds();
